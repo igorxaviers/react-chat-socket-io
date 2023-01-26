@@ -1,10 +1,8 @@
 const express = require('express');
 const app = express();
 const PORT = 4000 || process.env.PORT;
-
 const http = require('http').Server(app);
 const cors = require('cors');
-
 app.use(cors());
 
 const socketIO = require('socket.io')(http, {
@@ -20,9 +18,20 @@ socketIO.on('connection', (socket) => {
       console.log(`🔌: ${socket.id} disconnected`);
     });
 
-    socket.on('name', (data) => {
-        console.log(data);
-        socket.emit('name', data + ' - ' + socket.id);
+    socket.on('join_room', (data) => {
+      socket.join(data.room);
+      socketIO.to(data.room).emit('recieve_message', {
+        username: 'admin',
+        message: `${data.username} has joined the room`,
+        time: new Date().toLocaleTimeString(),
+      });
+      console.log(data);
+    });
+
+
+    socket.on('send_message', (data) => {
+      console.log(data);
+      socketIO.to(data.room).emit('recieve_message', data);
     });
 });
 

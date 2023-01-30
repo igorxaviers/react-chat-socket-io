@@ -5,35 +5,80 @@ const http = require('http').Server(app);
 const cors = require('cors');
 app.use(cors());
 
+let rooms = [];
+
 const socketIO = require('socket.io')(http, {
     cors: {
         origin: "http://localhost:3000"
     }
 });
 
+function roomExists(roomName) {
+  return rooms.some((room) => room.username === roomName);
+}
+
 socketIO.on('connection', (socket) => {
     console.log(`✅: ${socket.id} user just connected!`);
+
     
+    socket.on('join_room', (data) => {
+      if(!roomExists(data.room)) {
+        rooms.push({room: data.room, users: []});
+      }
+      else{
+        rooms.forEach((room) => {
+          if(room.room === data.room) {
+            room.users.push(data.username);
+          }
+        });
+      }
+
+      console.log(data);
+
+      let date = new Date();
+      socket.join(data.room);
+      let dataJoin = {
+        username: data.username,
+        message: `<strong>${data.username}</strong> has joined the room`,
+        time: dateNow(),
+        room: data.room,
+        notification: true
+      };
+      socket.to(data.room).emit('user_join', dataJoin);
+    });
+
+    socket.on('leave_room', (data) => {
+      let date = new Date();
+      socket.leave(data.room);
+      let dataLeave = {
+        username: data.username,
+        message: `<strong>${data.username}</strong> has left the room`,
+        time: dateNow(),
+        room: data.room,
+        notification: true
+      };
+      socket.to(data.room).emit('user_leave', dataLeave);
+    })
+
+    socket.on('send_message', (data) => {
+      socket.to(data.room).emit('recieve_message', data);
+    });
+
+    socket.on('user_typing', (data) => {
+      socket.to(data.room).emit('user_typing', {username: data.username});
+    });
+
     socket.on('disconnect', () => {
       console.log(`🔌: ${socket.id} disconnected`);
     });
-
-    socket.on('join_room', (data) => {
-      socket.join(data.room);
-      socketIO.to(data.room).emit('recieve_message', {
-        username: 'admin',
-        message: `${data.username} has joined the room`,
-        time: new Date().toLocaleTimeString(),
-      });
-      console.log(data);
-    });
-
-
-    socket.on('send_message', (data) => {
-      console.log(data);
-      socketIO.to(data.room).emit('recieve_message', data);
-    });
 });
+
+const dateNow = () => {
+  let date = new Date();
+  let hours = date.getHours() <= 9 ? `0${date.getHours()}` : date.getHours();
+  let minutes = date.getMinutes() <= 9 ? `0${date.getMinutes()}` : date.getMinutes();
+  return `${hours}:${minutes}`;
+}
 
 app.get('/api', (req, res) => {
   res.json({

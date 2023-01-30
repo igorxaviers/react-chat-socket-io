@@ -1,48 +1,84 @@
-import './App.css';
+import { FiMessageSquare, FiLogOut, FiMoon, FiSun } from "react-icons/fi";
 import Chat from './Chat';
+import Modal from './Modal';
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:4000');
 
 function App() {
   const [username, setUsername] = useState('');
-  const [room, setRoom] = useState(''); 
+  const [joinedChat, setJoinedChat] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   
   useEffect(() => {
     socket.on('connect', () => {
       console.log('connected');
     });
 
-
-
+    socket.on('disconnect', () => {
+      console.log('disconnected');
+    });
   }, [socket]);
 
-  const joinRoom = async() => {
-    await socket.emit('join_room', {username, room});
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    if(username) {
+      setUsername(username);
+      setJoinedChat(true);
+    }
+  }, []);
+
+  
+  const joinUser = async () => {
+    console.log(username);
+    if(username === '')
+      return;
+    setJoinedChat(true);
+    localStorage.setItem('username', username);
+  }
+
+  const logout = () => {
+    setUsername('');
+    setJoinedChat(false);
+    localStorage.removeItem('username');
+  }
+
+  const changeTheme = () => {
+    setDarkMode(!darkMode);
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+    document.body.classList.toggle('dark');
   }
 
   return (
     <div className="App">
-      <h1 className="my-5">⚛️ React  & ⚡ Socket.io</h1>
+      <nav className="navbar">
 
-      <div className="d-flex align-items-center col-6 mx-auto">
-          <input 
-          className="form-control" 
-          type="text" 
-          value={username} onChange={(e) => setUsername(e.target.value)} 
-          placeholder="Your username"/>
+          <h1 className="my-5">Chat.io</h1>
+          <FiMessageSquare className="teste"/>
+          
+        {joinedChat ?
+          <div className="user-info">
+            <p className="user-name">{username}</p>
+            <button className="button button-dark" onClick={logout}>Leave <FiLogOut/></button>
+          </div>
+          :''
+        }
+      </nav>
 
-          <input 
-          className="form-control" 
-          type="text" 
-          value={room} onChange={(e) => setRoom(e.target.value)} 
-          placeholder="Room"/>
+      {!joinedChat ? 
+        <Modal 
+        username={username} 
+        setUsername={setUsername} 
+        joinUser={joinUser}/>
+      : ''}
 
-          <button className="btn btn-dark " onClick={() => joinRoom()}>Join</button>
+      <Chat 
+        socket={socket} 
+        username={username}/>
 
+      <div onClick={changeTheme}>
+        {darkMode ? <FiMoon/> : <FiSun/> }
       </div>
-      <Chat socket={socket} username={username} room={room}/>
-
     </div>
   );
 }

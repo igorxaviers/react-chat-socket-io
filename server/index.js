@@ -1,17 +1,18 @@
 const express = require('express');
 const app = express();
-const PORT = 4000 || process.env.PORT;
-const http = require('http').Server(app);
+const PORT = process.env.PORT || 4000;
+const server = require('http').createServer(app);
 const cors = require('cors');
 app.use(cors());
+const socketIO = require('socket.io')(server);
 
 let rooms = [];
 
-const socketIO = require('socket.io')(http, {
-    cors: {
-      origin: "https://react-chat-socket-io.vercel.app/"
-    }
-});
+// const socketIO = require('socket.io')(http, {
+//     cors: {
+//       origin: "https://react-chat-socket-io.vercel.app/"
+//     }
+// });
 
 function roomExists(roomName) {
   return rooms.some((room) => room.username === roomName);
@@ -83,6 +84,6 @@ app.get('/test', (req, res) => {
   res.send('Hello World!');
 });
 
-http.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

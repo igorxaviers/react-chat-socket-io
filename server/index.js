@@ -17,7 +17,7 @@ const socketIO = require('socket.io')(server, {
     origin: "*",
     allowedHeaders: "*",
     methods: ["GET", "POST"],
-    credentials: true
+    // credentials: true
   }
 });
 

@@ -28,10 +28,10 @@ function App() {
     console.log(socket.id);
     console.log(connected);
 
-    return () => {
-      socket.off('connect');
-      socket.off('disconnect');
-    }
+    // return () => {
+    //   socket.off('connect');
+    //   socket.off('disconnect');
+    // }
 
   }, [socket]);
 

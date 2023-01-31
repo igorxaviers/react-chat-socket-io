@@ -32,6 +32,7 @@ function ChatHeader(props) {
               <label htmlFor="room">Room</label>
               <FiMessageCircle/>
             </div>
+            
             <input 
               type="text" 
               value={props.room} 

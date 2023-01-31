@@ -1,7 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import Message from './Message'
+// import EmojiPicker from 'emoji-picker-react';
+import toast, { Toaster } from 'react-hot-toast';
 import ChatHeader from './ChatHeader';
-import { FiSend } from "react-icons/fi";
+import ChatBody from './ChatBody';
+import { FiSend, FiSmile } from "react-icons/fi";
 
 export default function Chat ({socket, username}) {
     const [message, setMessage] = useState('');
@@ -36,12 +39,18 @@ export default function Chat ({socket, username}) {
     }
 
     const handleTyping = (e) => {
-        console.log(e.key);
         setMessage(e.target.value);
         if(e.key === 'Enter'){
             sendMessage();
         }
-        socket.emit('user_typing', {username, room});
+        // socket.emit('user_typing', {username, room});
+        // WILL DO THIS LATER 👌
+    }
+
+    const handleClickChat = () => {
+        if(!joinedRoom)
+            toast.error("Join a room before chatting! 😉");
+
     }
 
     useEffect(() => {
@@ -60,15 +69,9 @@ export default function Chat ({socket, username}) {
         // socket.on('user_typing', (data) => {
         //     setUserTyping(data.username);
         // });
+        // WILL DO THIS LATER 👌
+
     }, [socket]);
-
-    useEffect(() => {
-        lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
-    }, [messageList]);
-
-    useEffect(() => {
-        console.log(room);
-    },[]);
 
 
     return ( 
@@ -84,29 +87,32 @@ export default function Chat ({socket, username}) {
                     setMessageList={setMessageList}/>
 
 
-                <div className="chat-messages">
-                    {messageList.map((message, index) => (
-                        <Message index={index} message={message} username={username}/>
-                    ))}
-                    <div ref={lastMessageRef} />
-                </div>
+                <ChatBody 
+                    messageList={messageList} 
+                    username={username}/>
+
+                    {/* { userTyping ? <p>{userTyping} is typing...</p> : ''} */}
+                    {/* WILL DO THIS LATER 👌 */}
 
 
-                    { userTyping ? <p>{userTyping} is typing...</p> : ''}
-                <div className="chat-footer">
-                    
+                <div className="chat-footer" onClick={() => handleClickChat()}>
+
+                    {/* <EmojiPicker/> */}
+
                     <textarea 
-                    className="chat-input" 
+                    className={`${!joinedRoom ? 'disabled' : ''} chat-input`} 
                     type="text" 
                     value={message} 
                     onChange={(e) => setMessage(e.target.value)} 
                     onKeyDown={handleTyping}
-                    onKeyUp={() => setUserTyping('')}
+                    // onKeyUp={() => setUserTyping('')}
+                    disabled={!joinedRoom}
                     placeholder="Your message"/>
         
-                    <button className="button" onClick={sendMessage}><FiSend/></button>
+                    <button className={`${!joinedRoom ? 'disabled' : ''} button`} onClick={sendMessage}><FiSend/></button>
                 </div>
             </div>
+            <div><Toaster position="bottom-right"/></div>
         </> 
     );
 }

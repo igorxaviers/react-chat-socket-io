@@ -282,6 +282,13 @@ label{
     }
   }
 
+  .disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
   .chat-footer{
     display: flex;
     justify-content: space-between;

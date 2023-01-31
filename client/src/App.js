@@ -9,7 +9,6 @@ const socket = io.connect('http://localhost:4000');
 function App() {
   const [username, setUsername] = useState('');
   const [joinedChat, setJoinedChat] = useState(false);
-  const ref = useRef(null);
   
   useEffect(() => {
     socket.on('connect', () => {
@@ -50,8 +49,7 @@ function App() {
     <div className="App">
       <nav className="navbar">
         <div className="nav-logo">
-          <h1>Chat.io</h1>
-          <FiMessageSquare/>
+          <h1>JustChat</h1>
         </div>
         {joinedChat ?
           <div className="user-info">
@@ -74,13 +72,13 @@ function App() {
         socket={socket} 
         username={username}/>
 
-      <div className="gradient"></div>
-
       <ThemeButton/>
 
-      <p class="footer-credits">
+      <p className="footer-credits">
         © {new Date().getFullYear()} design & desenvolvimento por <a href="https://github.com/igorxaviers/" target="_blank" rel="noreferrer">Igor Xavier</a> ❤️
       </p>
+
+      <div className="gradient"></div>
     </div>
   );
 }

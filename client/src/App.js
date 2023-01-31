@@ -4,7 +4,7 @@ import Modal from './Modal';
 import ThemeButton from "./ThemeButton";
 import { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
-const socket = io.connect('https://react-chat-socket-io-1paz.vercel.app:4000');
+const socket = io.connect('https://react-chat-socket-io-1paz.vercel.app/');
 // const socket = io.connect('http://localhost:4000');
 
 function App() {
@@ -22,6 +22,17 @@ function App() {
       setConnected(false);
       console.log('disconnected');
     });
+
+    console.log(socket);
+    console.log(socket.connected);
+    console.log(socket.id);
+    console.log(connected);
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+    }
+
   }, [socket]);
 
   useEffect(() => {

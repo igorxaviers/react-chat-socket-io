@@ -21,7 +21,8 @@ const socketIO = require('socket.io')(server, {
   }
 });
 
-socketIO.origins('*:*');
+// socketIO.set('origins', '*:*');
+// socketIO.origin('*:*');
 
 
 let rooms = [];

@@ -1,18 +1,26 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 4000;
-const server = require('http').createServer(app);
+const server = require('http').Server(app);
 const cors = require('cors');
+const socketIO = require('socket.io')(server, {
+  cors: {
+    origin: "https://react-chat-socket-io.vercel.app/",
+    methods: ["GET", "POST"]
+  }
+});
+
 app.use(cors());
-const socketIO = require('socket.io')(server);
+app.use((req, res, next) =>{
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+
 
 let rooms = [];
 
-// const socketIO = require('socket.io')(http, {
-//     cors: {
-//       origin: "https://react-chat-socket-io.vercel.app/"
-//     }
-// });
 
 function roomExists(roomName) {
   return rooms.some((room) => room.username === roomName);

@@ -14,7 +14,7 @@ function Message({ message, index, username}) {
         <>
             <div key={index} className={`${typeMessage()}`}>
                 {message.author === username ? '' : <p className='message-author'>{message.author}</p>}
-                <p className='message-text' dangerouslySetInnerHTML={{__html: message.message}}></p>
+                <p className='message-text' dangerouslySetInnerHTML={{__html: message.message}} title={message.message}></p>
                 <p className='message-time'>{message.time}</p>
             </div>
         </>

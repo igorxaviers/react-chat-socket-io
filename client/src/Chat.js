@@ -12,7 +12,9 @@ export default function Chat ({socket, username}) {
     const lastMessageRef = useRef(null);
 
     const sendMessage = async () => {
-        if(!message || !joinedRoom) return;
+        if(!joinedRoom) return;
+        if(message.trim() === '') return;
+        
         const messageData = {
             author: username,
             message: message,
@@ -35,6 +37,7 @@ export default function Chat ({socket, username}) {
 
     const handleTyping = (e) => {
         console.log(e.key);
+        setMessage(e.target.value);
         if(e.key === 'Enter'){
             sendMessage();
         }

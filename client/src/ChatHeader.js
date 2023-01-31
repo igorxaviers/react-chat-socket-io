@@ -16,30 +16,36 @@ function ChatHeader(props) {
   }
 
     return ( 
-        <div className="chat-header">
-           {props.joinedRoom ? 
-           <>
+      <div className="chat-header">
+          {props.joinedRoom ? 
+          <>
             <h3>{props.room}</h3> 
-            <button className="button button-dark" onClick={() => leaveRoom()}>Leave <FiLogOut/> </button>
-           </>
-            : 
-            <>
-              <div className="chat-header-title">
-                <label htmlFor="room">Room</label>
-                <FiMessageCircle/>
-              </div>
-              <input 
-                type="text" 
-                value={props.room} 
-                onChange={(e) => props.setRoom(e.target.value)} 
-                placeholder="Name of the room"
-                id="room"/> 
-              <button className="button button-dark" onClick={() => joinRoom()}>Join <FiLogIn/> </button>
-           </>
-           }
-            
-
-        </div>
+            <button className="button button-dark" 
+            onClick={() => leaveRoom()} 
+            title="Leave current room">
+              <span className="button-text">Leave</span> <FiLogOut/>
+            </button>
+          </>
+          : 
+          <>
+            <div className="chat-header-title">
+              <label htmlFor="room">Room</label>
+              <FiMessageCircle/>
+            </div>
+            <input 
+              type="text" 
+              value={props.room} 
+              onChange={(e) => props.setRoom(e.target.value)} 
+              placeholder="Room name"
+              id="room"/> 
+            <button className="button button-dark" 
+            onClick={() => joinRoom()} 
+            title="Join a room">
+              <span className="button-text">Join</span> <FiLogIn/> 
+            </button>
+          </>
+          }
+      </div>
     );
 }
 

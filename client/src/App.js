@@ -1,14 +1,15 @@
-import { FiMessageSquare, FiLogOut, FiMoon, FiSun } from "react-icons/fi";
+import { FiMessageSquare, FiLogOut, FiUser } from "react-icons/fi";
 import Chat from './Chat';
 import Modal from './Modal';
-import { useEffect, useState } from 'react';
+import ThemeButton from "./ThemeButton";
+import { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:4000');
 
 function App() {
   const [username, setUsername] = useState('');
   const [joinedChat, setJoinedChat] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const ref = useRef(null);
   
   useEffect(() => {
     socket.on('connect', () => {
@@ -43,23 +44,20 @@ function App() {
     localStorage.removeItem('username');
   }
 
-  const changeTheme = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-    document.body.classList.toggle('dark');
-  }
+
 
   return (
     <div className="App">
       <nav className="navbar">
-
-          <h1 className="my-5">Chat.io</h1>
-          <FiMessageSquare className="teste"/>
-          
+        <div className="nav-logo">
+          <h1>Chat.io</h1>
+          <FiMessageSquare/>
+        </div>
         {joinedChat ?
           <div className="user-info">
+            <FiUser/>
             <p className="user-name">{username}</p>
-            <button className="button button-dark" onClick={logout}>Leave <FiLogOut/></button>
+            <button className="button button-dark" onClick={logout} title="Log out from chat">Logout <FiLogOut/></button>
           </div>
           :''
         }
@@ -76,9 +74,9 @@ function App() {
         socket={socket} 
         username={username}/>
 
-      <div onClick={changeTheme}>
-        {darkMode ? <FiMoon/> : <FiSun/> }
-      </div>
+      <div className="gradient"></div>
+
+      <ThemeButton/>
     </div>
   );
 }

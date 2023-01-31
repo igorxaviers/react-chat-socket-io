@@ -19,7 +19,6 @@ function roomExists(roomName) {
 
 socketIO.on('connection', (socket) => {
     console.log(`✅: ${socket.id} user just connected!`);
-
     
     socket.on('join_room', (data) => {
       if(!roomExists(data.room)) {
@@ -79,6 +78,10 @@ const dateNow = () => {
   let minutes = date.getMinutes() <= 9 ? `0${date.getMinutes()}` : date.getMinutes();
   return `${hours}:${minutes}`;
 }
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
 
 http.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

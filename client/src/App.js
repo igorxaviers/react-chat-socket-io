@@ -4,18 +4,21 @@ import Modal from './Modal';
 import ThemeButton from "./ThemeButton";
 import { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
-const socket = io.connect('http://localhost:4000');
+const socket = io.connect('https://react-chat-socket-io-1paz.vercel.app:4000');
 
 function App() {
   const [username, setUsername] = useState('');
+  const [connected, setConnected] = useState(false);
   const [joinedChat, setJoinedChat] = useState(false);
   
   useEffect(() => {
     socket.on('connect', () => {
+      setConnected(true);
       console.log('connected');
     });
 
     socket.on('disconnect', () => {
+      setConnected(false);
       console.log('disconnected');
     });
   }, [socket]);
@@ -28,7 +31,6 @@ function App() {
     }
   }, []);
 
-  
   const joinUser = async () => {
     console.log(username);
     if(username === '')
@@ -42,7 +44,6 @@ function App() {
     setJoinedChat(false);
     localStorage.removeItem('username');
   }
-
 
 
   return (

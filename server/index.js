@@ -91,6 +91,7 @@ const dateNow = () => {
 
 app.get('/test', (req, res) => {
   res.send('Hello World!');
+  console.log('Hello World!');
 });
 
 server.listen(PORT, () => {

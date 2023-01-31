@@ -77,6 +77,10 @@ function App() {
       <div className="gradient"></div>
 
       <ThemeButton/>
+
+      <p class="footer-credits">
+        © {new Date().getFullYear()} design & desenvolvimento por <a href="https://github.com/igorxaviers/" target="_blank" rel="noreferrer">Igor Xavier</a> ❤️
+      </p>
     </div>
   );
 }

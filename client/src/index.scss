@@ -338,36 +338,43 @@ label{
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  // background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
   z-index: 0;
   opacity: 0.2;
   filter: blur(0em);
 }
 
-// .gradient{
-//   width: 10em;
-//   height: 10em;
-//   border-radius: 50%;
-//   position: absolute;
-//   top: 0;
-//   filter: blur(2em);
-//   left: 0;
-//   opacity: 0.3;
-//   background-image: linear-gradient(180deg, #5538ab 0%, #791c91 100%);
-//   z-index: 0;
-// }
+.footer-credits{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.5em;
+  text-align: center;
+  font-size: 0.9em;
+  color: var(--text);
+  z-index: 10;
+  a{
+    color: var(--color-secondary);
+    text-decoration: none;
+    font-weight: 700;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+}
+
 
 @media screen and (max-width: 768px) {
 
   .chat{
     width: 95%;
-    margin: 1em auto 0 auto;
+    margin: 0.6em auto 0 auto;
     .chat-messages{
       min-height: 70vh;
       padding: 4.5em 1em 0 1em;
     }
     .chat-header{
-      padding: 0.5em;
+      padding: 0.3em;
       label{
         font-size: 0.8em;
       }
@@ -390,6 +397,9 @@ label{
       padding: 0.5em 1em;
       .chat-input{
         border-width: 0.5em;
+      }
+      .button{
+        padding: 0.3em;
       }
     }
   }
@@ -435,7 +445,7 @@ label{
 
 @media screen and (min-width: 768px) {
   .chat{
-    width: 50%;
+    width: 70%;
   }
 }
 

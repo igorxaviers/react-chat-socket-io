@@ -1,0 +1,9 @@
+{
+  "name": "Chat",
+  "version": "1.0.0",
+  "description": "React chat using socket.io",
+  "main": "index.js",
+  "repository": "https://github.com/igorxaviers/react-chat-socket-io.git",
+  "author": "Igor Xavier <igorxavier.ixds@gmail.com>",
+  "license": "MIT"
+}

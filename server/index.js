@@ -5,6 +5,7 @@ const server = require('http').Server(app);
 const cors = require('cors');
 const socketIO = require('socket.io')(server, {
   cors: {
+    // origin: "http://localhost:3000",
     origin: "https://react-chat-socket-io.vercel.app/",
     methods: ["GET", "POST"]
   }

@@ -14,12 +14,14 @@ app.use(cors());
 const socketIO = require('socket.io')(server, {
   cors: {
     // origin: "http://localhost:3000",
-    origin: "https://react-chat-socket-io.vercel.app/",
-    methods: ["GET", "POST"]
+    origin: "*",
+    allowedHeaders: "*",
+    methods: ["GET", "POST"],
+    credentials: false
   }
 });
 
-
+socketIO.origins('*:*');
 
 
 let rooms = [];

@@ -79,12 +79,10 @@ const dateNow = () => {
   return `${hours}:${minutes}`;
 }
 
-app.get('/', (req, res) => {
+app.get('/test', (req, res) => {
   res.send('Hello World!');
 });
 
 http.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
-module.exports = http;

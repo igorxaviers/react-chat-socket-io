@@ -2,28 +2,15 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 4000;
 const server = require('http').Server(app);
-const cors = require('cors');
-
-// app.use(cors());
-// app.use((req, res, next) =>{
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
 const socketIO = require('socket.io')(server, {
   cors: {
     // origin: "http://localhost:3000",
     origin: "*",
     allowedHeaders: "*",
     methods: ["GET", "POST"],
-    // credentials: true
+    credentials: true
   }
 });
-
-// socketIO.set('origins', '*:*');
-// socketIO.origin('*:*');
-
 
 let rooms = [];
 

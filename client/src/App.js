@@ -2,10 +2,11 @@ import { FiMessageSquare, FiLogOut, FiUser } from "react-icons/fi";
 import Chat from './Chat';
 import Modal from './Modal';
 import ThemeButton from "./ThemeButton";
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-const socket = io.connect('https://react-chat-socket-io-1paz.vercel.app/');
+// const socket = io.connect('https://react-chat-socket-io-1paz.vercel.app/');
 // const socket = io.connect('http://localhost:4000');
+const socket = io.connect('https://server-socket-chat.herokuapp.com/');
 
 function App() {
   const [username, setUsername] = useState('');

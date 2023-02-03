@@ -7,13 +7,14 @@ function ChatBody({messageList, username}) {
     const lastMessageRef = useRef(null);
 
     useEffect(() => {
+        console.log(messageList);
         lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
     }, [messageList]);
 
     return ( 
         <div className="chat-messages">
             {messageList.map((message, index) => (
-                <Message index={index} message={message} username={username}/>
+                <Message key={index} index={index} message={message} username={username}/>
             ))}
             <div ref={lastMessageRef} />
         </div>

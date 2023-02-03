@@ -12,7 +12,7 @@ export default function Chat ({socket, username}) {
     const [room, setRoom] = useState(''); 
     const [joinedRoom, setJoinedRoom] = useState(false);
     const [userTyping, setUserTyping] = useState('');
-    const lastMessageRef = useRef(null);
+    const TYPING_DELAY = 500;
 
     const sendMessage = async () => {
         if(!joinedRoom) return;
@@ -43,8 +43,6 @@ export default function Chat ({socket, username}) {
         if(e.key === 'Enter'){
             sendMessage();
         }
-        // socket.emit('user_typing', {username, room});
-        // WILL DO THIS LATER 👌
     }
 
     const handleClickChat = () => {
@@ -66,12 +64,26 @@ export default function Chat ({socket, username}) {
             setMessageList((list) => [...list, data]);
         });
 
-        // socket.on('user_typing', (data) => {
-        //     setUserTyping(data.username);
-        // });
-        // WILL DO THIS LATER 👌
+        socket.on('user_typing', (data) => {
+            setUserTyping(data.username);
+        });
+
+        socket.on('user_stop_typing', (data) => {
+            setUserTyping('');
+        });
 
     }, [socket]);
+
+    useEffect(() =>{
+        let timeoutId;
+        setUserTyping(username);
+        clearTimeout(timeoutId);
+        socket.emit('user_typing', {username, room});
+        timeoutId = setTimeout(() => {
+            socket.emit('user_stop_typing', {username, room});
+        }, TYPING_DELAY);
+
+    }, [message])
 
 
     return ( 
@@ -91,8 +103,9 @@ export default function Chat ({socket, username}) {
                     messageList={messageList} 
                     username={username}/>
 
-                    {/* { userTyping ? <p>{userTyping} is typing...</p> : ''} */}
-                    {/* WILL DO THIS LATER 👌 */}
+                    { userTyping !== '' && username !== userTyping ?
+                        <p>{userTyping} is typing...</p> 
+                    : ''}
 
 
                 <div className="chat-footer" onClick={() => handleClickChat()}>
@@ -105,7 +118,7 @@ export default function Chat ({socket, username}) {
                     value={message} 
                     onChange={(e) => setMessage(e.target.value)} 
                     onKeyDown={handleTyping}
-                    // onKeyUp={() => setUserTyping('')}
+                    onKeyUp={() => setUserTyping('')}
                     disabled={!joinedRoom}
                     placeholder="Your message"/>
         

@@ -4,9 +4,8 @@ import Modal from './Modal';
 import ThemeButton from "./ThemeButton";
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-// const socket = io.connect('https://react-chat-socket-io-1paz.vercel.app/');
-// const socket = io.connect('http://localhost:4000');
-const socket = io.connect('https://server-socket-chat.herokuapp.com/');
+const SOCKET_SERVER_URL = process.env.SERVER_URL || 'http://localhost:4000';
+const socket = io.connect(SOCKET_SERVER_URL);
 
 function App() {
   const [username, setUsername] = useState('');
@@ -24,16 +23,10 @@ function App() {
       console.log('disconnected');
     });
 
-    console.log(socket);
-    console.log(socket.connected);
-    console.log(socket.id);
-    console.log(connected);
-
-    // return () => {
-    //   socket.off('connect');
-    //   socket.off('disconnect');
-    // }
-
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+    }
   }, [socket]);
 
   useEffect(() => {
@@ -45,7 +38,6 @@ function App() {
   }, []);
 
   const joinUser = async () => {
-    console.log(username);
     if(username === '')
       return;
     setJoinedChat(true);
@@ -71,8 +63,7 @@ function App() {
             <p className="user-name">{username}</p>
             <button className="button button-dark" onClick={logout} title="Log out from chat">Logout <FiLogOut/></button>
           </div>
-          :''
-        }
+        :''}
       </nav>
 
       {!joinedChat ? 

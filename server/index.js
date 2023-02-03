@@ -1,15 +1,18 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 4000;
 const server = require('http').Server(app);
+const PORT = process.env.PORT || 4000;
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000'
 const socketIO = require('socket.io')(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: CLIENT_URL,
     allowedHeaders: "*",
     methods: ["GET", "POST"],
     credentials: true
   }
 });
+
+console.log(CLIENT_URL);
 
 let rooms = [];
 

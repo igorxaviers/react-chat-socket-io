@@ -4,8 +4,7 @@ const PORT = process.env.PORT || 4000;
 const server = require('http').Server(app);
 const socketIO = require('socket.io')(server, {
   cors: {
-    // origin: "http://localhost:3000",
-    origin: "*",
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     allowedHeaders: "*",
     methods: ["GET", "POST"],
     credentials: true
@@ -67,6 +66,10 @@ socketIO.on('connection', (socket) => {
 
     socket.on('user_typing', (data) => {
       socket.to(data.room).emit('user_typing', {username: data.username});
+    });
+
+    socket.on('user_stop_typing', (data) => {
+      socket.to(data.room).emit('user_stop_typing', {username: ''});
     });
 
     socket.on('disconnect', () => {

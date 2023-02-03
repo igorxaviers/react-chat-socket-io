@@ -30,6 +30,7 @@ function App() {
   }, [socket]);
 
   useEffect(() => {
+    console.log(SOCKET_SERVER_URL);
     const username = localStorage.getItem('username');
     if(username) {
       setUsername(username);

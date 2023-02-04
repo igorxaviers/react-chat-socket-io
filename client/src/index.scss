@@ -279,6 +279,19 @@ label{
       white-space: nowrap;
     }
 
+    
+    .chat-room-users{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.9em;
+      font-weight: 700;
+      margin-right: 3em;
+      svg{
+        margin-right: 0.4em;
+      }
+    }
+
     .chat-header-title{
       display: flex;
       align-items: center;
@@ -362,20 +375,6 @@ label{
   }
 }
 
-.gradient{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  z-index: 0;
-  opacity: 0.2;
-  filter: blur(0em);
-}
-
 .footer-credits{
   position: absolute;
   bottom: 0;
@@ -408,6 +407,10 @@ label{
     }
     .chat-header{
       padding: 0.3em;
+
+      .chat-room-users{
+
+      }
       label{
         font-size: 0.8em;
       }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiMessageCircle, FiLogIn, FiLogOut } from "react-icons/fi";
+import { FiMessageCircle, FiLogIn, FiLogOut, FiUsers } from "react-icons/fi";
 
 function ChatHeader(props) {
   const [users, setUsers] = useState(0);
@@ -7,7 +7,6 @@ function ChatHeader(props) {
   useEffect(() => {
     props.socket.on('users_in_room', (data) => {
       setUsers(data.users);
-      console.log(data.users);
     });
   }, [props.socket, props.setJoinedRoom, props.setRoom]);
 
@@ -29,7 +28,10 @@ function ChatHeader(props) {
         <div className="chat-header">
             {props.joinedRoom ? 
             <>
-              <p>{users}</p>
+              <div className="chat-room-users">
+                <FiUsers/>
+                <p>{users}</p>
+              </div>
               <h3>{props.room}</h3> 
               <button className="button button-dark" 
               onClick={() => leaveRoom()} 

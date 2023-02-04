@@ -15,12 +15,10 @@ function App() {
   useEffect(() => {
     socket.on('connect', () => {
       setConnected(true);
-      console.log('connected');
     });
 
     socket.on('disconnect', () => {
       setConnected(false);
-      console.log('disconnected');
     });
 
     return () => {
@@ -30,7 +28,6 @@ function App() {
   }, [socket]);
 
   useEffect(() => {
-    console.log(SOCKET_SERVER_URL);
     const username = localStorage.getItem('username');
     if(username) {
       setUsername(username);
@@ -85,7 +82,6 @@ function App() {
         © {new Date().getFullYear()} design & built by <a href="https://github.com/igorxaviers/" target="_blank" rel="noreferrer">Igor Xavier</a> ❤️
       </p>
 
-      <div className="gradient"></div>
     </div>
   );
 }

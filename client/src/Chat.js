@@ -26,7 +26,7 @@ export default function Chat ({socket, username}) {
         };
         await socket.emit('send_message', messageData);
         setMessageList((list) => [...list, messageData]);
-        setMessage(message => '');
+        setMessage('');
         setUserTyping('');
     }
 
@@ -104,12 +104,9 @@ export default function Chat ({socket, username}) {
                     setMessageList={setMessageList}
                     userTyping={userTyping}/>
 
-
                 <ChatBody 
                     messageList={messageList} 
                     username={username}/>
-
-
 
                 <div className="chat-footer" onClick={() => handleClickChat()}>
 
@@ -127,6 +124,7 @@ export default function Chat ({socket, username}) {
                     <button className={`${!joinedRoom ? 'disabled' : ''} button`} onClick={sendMessage}><FiSend/></button>
                 </div>
             </div>
+            
             <div><Toaster position="bottom-right"/></div>
         </> 
     );

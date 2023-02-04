@@ -4,8 +4,7 @@ import Modal from './Modal';
 import ThemeButton from "./ThemeButton";
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-const SOCKET_SERVER_URL = 'http://localhost:4000';
-// const SOCKET_SERVER_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:4000';
+const SOCKET_SERVER_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:4000';
 const socket = io.connect(SOCKET_SERVER_URL);
 
 function App() {

@@ -12,55 +12,53 @@ const socketIO = require('socket.io')(server, {
   }
 });
 
-console.log(CLIENT_URL);
+const roomClients = {};
+// const clients = {};
 
-let rooms = [];
-
-
-function roomExists(roomName) {
-  return rooms.some((room) => room.username === roomName);
-}
+// const userExists = (roomName, username) => {
+//   return roomClients.some((room) => room.room === roomName && room.users.includes(username));
+// }
 
 socketIO.on('connection', (socket) => {
     console.log(`✅: ${socket.id} user just connected!`);
     
     socket.on('join_room', (data) => {
-      if(!roomExists(data.room)) {
-        rooms.push({room: data.room, users: []});
+      const {room} = data;
+      if (!roomClients[room]) {
+        roomClients[room] = 0;
       }
-      else{
-        rooms.forEach((room) => {
-          if(room.room === data.room) {
-            room.users.push(data.username);
-          }
-        });
-      }
+      roomClients[room]++;
+      socket.join(room);
+      
+      socketIO.to(room).emit('users_in_room', {
+        users: roomClients[room]
+      });
 
-      console.log(data);
-
-      let date = new Date();
-      socket.join(data.room);
       let dataJoin = {
         username: data.username,
         message: `<strong>${data.username}</strong> has joined the room`,
         time: dateNow(),
-        room: data.room,
+        room: room,
         notification: true
       };
-      socket.to(data.room).emit('user_join', dataJoin);
+      socket.to(room).emit('user_join', dataJoin);
     });
 
     socket.on('leave_room', (data) => {
-      let date = new Date();
-      socket.leave(data.room);
+      const {room} = data;
+      roomClients[room]--;
+      socketIO.to(room).emit('users_in_room', {
+        users: roomClients[room]
+      });
+      socket.leave(room);
       let dataLeave = {
         username: data.username,
         message: `<strong>${data.username}</strong> has left the room`,
         time: dateNow(),
-        room: data.room,
+        room: room,
         notification: true
       };
-      socket.to(data.room).emit('user_leave', dataLeave);
+      socket.to(room).emit('user_leave', dataLeave);
     })
 
     socket.on('send_message', (data) => {
@@ -77,6 +75,7 @@ socketIO.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       console.log(`🔌: ${socket.id} disconnected`);
+
     });
 });
 

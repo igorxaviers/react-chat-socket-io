@@ -1,13 +1,13 @@
 :root{
   --background: #181818;
-  --background-light: #242424;
+  --background-light: #1b1b1b;
   --text: #f0f0f0;
   --text-light: #f0f0f0;
-  --color-primary: #141414;
+  --color-primary: #111111;
   --color-secondary: #e5552a;
   --color-secondary-darker: #bb4724;
   --color-tertiary: #e5552a;
-  --color-quaternary: #1d1d1d;
+  --color-quaternary: #181818;
   --button: #ffffff1c;
 } 
 html[data-theme='light'] {
@@ -55,6 +55,21 @@ body {
     align-items: center;
     right: 1em;
     display: flex;
+
+    .user-status{
+      width: 0.5em;
+      height: 0.5em;
+      border-radius: 50%;
+      margin-right: 0.5em;
+      &.connected{
+        background-color: #00ff88;
+        box-shadow: 0px 0px 10px 1px #00ff88ad
+      }
+      &.disconnected{
+        background-color: #ff3300;
+        box-shadow: 0px 0px 10px 1px #ff3300c0;
+      }
+    }
 
     .user-name{
       margin-right: 0.5em;
@@ -179,15 +194,15 @@ label{
   overflow: hidden;
   position: relative;
   z-index: 10;
-  margin: 3em auto 0 auto;
+  margin: 2em auto 0 auto;
   background-color: var(--color-primary);
   border-radius: 1em;
 
   .chat-messages{
     overflow-y: scroll;
-    min-height: 60vh;
-    max-height: 60vh;
-    padding: 6.5em 1em 0 1em;
+    min-height: 55vh;
+    max-height: 55vh;
+    padding: 1.5em 1em 0 1em;
     background-image: url('../public/chat-bg.png');
     background-position: center;
     background-size: cover;
@@ -247,17 +262,16 @@ label{
   .chat-header{
     display: flex;
     align-items: center;
-    position: absolute;
     justify-content: center;
     top: 0;
     left: 0;
     width: 100%;
     background-color: var(--color-primary);
-    padding: 1.5em 2em;
+    padding: 0.8em 2em 0.4em 2em;
     z-index: 10;
 
     h3{
-      font-size: 2em;
+      font-size: 1.7em;
       font-weight: 500;
       max-width: 65%;
       overflow: hidden;
@@ -282,6 +296,16 @@ label{
     }
   }
 
+  .user-typing{
+    height: 1.3em;
+    font-size: 0.85em;
+    text-align: center;
+    color: var(--button);
+    p{
+      margin-bottom: 0.4em;
+    }
+  }
+
   .disabled{
     opacity: 0.5;
     cursor: not-allowed;
@@ -302,6 +326,8 @@ label{
       border-radius: 0.55em;
       font-size: 0.95em;
       padding: 0.5em;
+      word-wrap: break-word;
+      word-break: break-word;
       border: 1em solid var(--background-light);
     } 
 
@@ -378,7 +404,7 @@ label{
     margin: 0.6em auto 0 auto;
     .chat-messages{
       min-height: 70vh;
-      padding: 4.5em 1em 0 1em;
+      padding: 2em 1em 0 1em;
     }
     .chat-header{
       padding: 0.3em;

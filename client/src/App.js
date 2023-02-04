@@ -1,10 +1,11 @@
-import { FiMessageSquare, FiLogOut, FiUser } from "react-icons/fi";
+import { FiLogOut, FiUser } from "react-icons/fi";
 import Chat from './Chat';
 import Modal from './Modal';
 import ThemeButton from "./ThemeButton";
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-const SOCKET_SERVER_URL = process.env.SERVER_URL || 'http://localhost:4000';
+const SOCKET_SERVER_URL = 'http://localhost:4000';
+// const SOCKET_SERVER_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:4000';
 const socket = io.connect(SOCKET_SERVER_URL);
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
         </div>
         {joinedChat ?
           <div className="user-info">
+            <div className={`${connected ? 'connected' : 'disconnected'} user-status`}></div>
             <FiUser/>
             <p className="user-name">{username}</p>
             <button className="button button-dark" onClick={logout} title="Log out from chat">Logout <FiLogOut/></button>
@@ -81,7 +83,7 @@ function App() {
       <ThemeButton/>
 
       <p className="footer-credits">
-        © {new Date().getFullYear()} design & desenvolvimento por <a href="https://github.com/igorxaviers/" target="_blank" rel="noreferrer">Igor Xavier</a> ❤️
+        © {new Date().getFullYear()} design & built by <a href="https://github.com/igorxaviers/" target="_blank" rel="noreferrer">Igor Xavier</a> ❤️
       </p>
 
       <div className="gradient"></div>

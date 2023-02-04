@@ -1,6 +1,4 @@
 
-
-
 function Message({ message, index, username}) {
     const typeMessage = () => {
         if(message.notification) 

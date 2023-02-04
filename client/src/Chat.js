@@ -1,10 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
-import Message from './Message'
+import { useEffect, useState } from 'react';
 // import EmojiPicker from 'emoji-picker-react';
 import toast, { Toaster } from 'react-hot-toast';
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
-import { FiSend, FiSmile } from "react-icons/fi";
+import { FiSend } from "react-icons/fi";
 
 export default function Chat ({socket, username}) {
     const [message, setMessage] = useState('');
@@ -12,7 +11,7 @@ export default function Chat ({socket, username}) {
     const [room, setRoom] = useState(''); 
     const [joinedRoom, setJoinedRoom] = useState(false);
     const [userTyping, setUserTyping] = useState('');
-    const TYPING_DELAY = 500;
+    const TYPING_DELAY = 2000;
 
     const sendMessage = async () => {
         if(!joinedRoom) return;
@@ -27,7 +26,7 @@ export default function Chat ({socket, username}) {
         };
         await socket.emit('send_message', messageData);
         setMessageList((list) => [...list, messageData]);
-        setMessage('');
+        setMessage(message => '');
         setUserTyping('');
     }
 
@@ -40,7 +39,25 @@ export default function Chat ({socket, username}) {
 
     const handleTyping = (e) => {
         setMessage(e.target.value);
+        if(e.key !== 'Enter' && e.target.value !== ''){
+            let timeoutId;
+            setUserTyping(username);
+            clearTimeout(timeoutId);
+            socket.emit('user_typing', {username, room});
+    
+            timeoutId = setTimeout(() => {
+                socket.emit('user_stop_typing', {username, room});
+            }, TYPING_DELAY);
+    
+            return () => {
+                clearTimeout(timeoutId);
+            }
+        }
+    }
+
+    const handleSend = (e) => {
         if(e.key === 'Enter'){
+            setMessage('');
             sendMessage();
         }
     }
@@ -48,7 +65,6 @@ export default function Chat ({socket, username}) {
     const handleClickChat = () => {
         if(!joinedRoom)
             toast.error("Join a room before chatting! 😉");
-
     }
 
     useEffect(() => {
@@ -74,17 +90,6 @@ export default function Chat ({socket, username}) {
 
     }, [socket]);
 
-    useEffect(() =>{
-        let timeoutId;
-        setUserTyping(username);
-        clearTimeout(timeoutId);
-        socket.emit('user_typing', {username, room});
-        timeoutId = setTimeout(() => {
-            socket.emit('user_stop_typing', {username, room});
-        }, TYPING_DELAY);
-
-    }, [message])
-
 
     return ( 
         <>
@@ -96,29 +101,26 @@ export default function Chat ({socket, username}) {
                     setRoom={setRoom} 
                     joinedRoom={joinedRoom} 
                     setJoinedRoom={setJoinedRoom} 
-                    setMessageList={setMessageList}/>
+                    setMessageList={setMessageList}
+                    userTyping={userTyping}/>
 
 
                 <ChatBody 
                     messageList={messageList} 
                     username={username}/>
 
-                    { userTyping !== '' && username !== userTyping ?
-                        <p>{userTyping} is typing...</p> 
-                    : ''}
 
 
                 <div className="chat-footer" onClick={() => handleClickChat()}>
 
                     {/* <EmojiPicker/> */}
 
-                    <textarea 
+                    <input 
                     className={`${!joinedRoom ? 'disabled' : ''} chat-input`} 
                     type="text" 
                     value={message} 
-                    onChange={(e) => setMessage(e.target.value)} 
-                    onKeyDown={handleTyping}
-                    onKeyUp={() => setUserTyping('')}
+                    onChange={handleTyping} 
+                    onKeyDown={handleSend}
                     disabled={!joinedRoom}
                     placeholder="Your message"/>
         

@@ -1,3 +1,4 @@
+import Util from './Util';
 import { useState, useEffect } from 'react';
 import { FiMessageCircle, FiLogIn, FiLogOut, FiUsers } from "react-icons/fi";
 
@@ -13,12 +14,12 @@ function ChatHeader(props) {
   const joinRoom = async () => {
     if(props.room === '') return;
 
-    await props.socket.emit('join_room', { username: props.username, room: props.room });
+    await props.socket.emit('join_room', { username: props.username, room: props.room, time: Util.dateNow() });
     props.setJoinedRoom(true);
   }
 
   const leaveRoom = async () => {
-    await props.socket.emit('leave_room', { username: props.username, room: props.room });
+    await props.socket.emit('leave_room', { username: props.username, room: props.room, time: Util.dateNow() });
     props.setJoinedRoom(false);
     props.setMessageList([]);
   }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 // import EmojiPicker from 'emoji-picker-react';
 import toast, { Toaster } from 'react-hot-toast';
+import Util from './Util';
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
 import { FiSend } from "react-icons/fi";
@@ -20,7 +21,7 @@ export default function Chat ({socket, username}) {
         const messageData = {
             author: username,
             message: message,
-            time: dateNow(),
+            time: Util.dateNow(),
             room: room,
             notification: false
         };
@@ -28,13 +29,6 @@ export default function Chat ({socket, username}) {
         setMessageList((list) => [...list, messageData]);
         setMessage('');
         setUserTyping('');
-    }
-
-    const dateNow = () => {
-        let date = new Date();
-        let hours = date.getHours() <= 9 ? `0${date.getHours()}` : date.getHours();
-        let minutes = date.getMinutes() <= 9 ? `0${date.getMinutes()}` : date.getMinutes();
-        return `${hours}:${minutes}`;
     }
 
     const handleTyping = (e) => {
@@ -124,7 +118,7 @@ export default function Chat ({socket, username}) {
                     <button className={`${!joinedRoom ? 'disabled' : ''} button`} onClick={sendMessage}><FiSend/></button>
                 </div>
             </div>
-            
+
             <div><Toaster position="bottom-right"/></div>
         </> 
     );

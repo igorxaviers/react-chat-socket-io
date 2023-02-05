@@ -37,7 +37,7 @@ socketIO.on('connection', (socket) => {
       let dataJoin = {
         username: data.username,
         message: `<strong>${data.username}</strong> has joined the room`,
-        time: dateNow(),
+        time: data.time,
         room: room,
         notification: true
       };
@@ -54,7 +54,7 @@ socketIO.on('connection', (socket) => {
       let dataLeave = {
         username: data.username,
         message: `<strong>${data.username}</strong> has left the room`,
-        time: dateNow(),
+        time:  data.time,
         room: room,
         notification: true
       };
@@ -78,13 +78,6 @@ socketIO.on('connection', (socket) => {
 
     });
 });
-
-const dateNow = () => {
-  let date = new Date();
-  let hours = date.getHours() <= 9 ? `0${date.getHours()}` : date.getHours();
-  let minutes = date.getMinutes() <= 9 ? `0${date.getMinutes()}` : date.getMinutes();
-  return `${hours}:${minutes}`;
-}
 
 app.get('/', (req, res) => {
   res.send(`Server listening on port ${PORT}`);

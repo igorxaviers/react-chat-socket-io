@@ -1,5 +1,8 @@
 # JustChat
+<a href="https://react-chat-socket-io.vercel.app/">production version</a>
+
 > A chat application using react ⚛️ and socket.io on client &amp; server side
+
 
 ## ⚒️ Tecnologies
 - React ⚛️
@@ -48,3 +51,9 @@ Start chatting
 
 Then leave (whenever you want)
 <img src="./screenshots/leaving-room.png"/>
+
+
+## 😊 Follow me
+- <a href="https://www.instagram.com/igorxavi_/">instagram</a>
+- <a href="https://www.linkedin.com/in/igorxavierdasilva/">linkedin</a>
+- <a href="https://github.com/igorxaviers">github</a>

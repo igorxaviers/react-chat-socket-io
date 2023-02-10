@@ -19,8 +19,12 @@ const roomClients = {};
 //   return roomClients.some((room) => room.room === roomName && room.users.includes(username));
 // }
 
+
 socketIO.on('connection', (socket) => {
     console.log(`✅: ${socket.id} user just connected!`);
+
+    socketIO.emit('room_list', {rooms: Object.keys(roomClients)});
+    console.log(roomClients);
     
     socket.on('join_room', (data) => {
       const {room} = data;
@@ -51,6 +55,9 @@ socketIO.on('connection', (socket) => {
         users: roomClients[room]
       });
       socket.leave(room);
+      if(roomClients[room] === 0){
+        delete roomClients[room];
+      }
       let dataLeave = {
         username: data.username,
         message: `<strong>${data.username}</strong> has left the room`,
@@ -75,7 +82,6 @@ socketIO.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       console.log(`🔌: ${socket.id} disconnected`);
-
     });
 });
 

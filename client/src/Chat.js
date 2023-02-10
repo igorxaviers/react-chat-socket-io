@@ -4,6 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import Util from './Util';
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
+import ChatRooms from './ChatRooms';
 import { FiSend } from "react-icons/fi";
 
 export default function Chat ({socket, username}) {
@@ -29,6 +30,8 @@ export default function Chat ({socket, username}) {
         setMessageList((list) => [...list, messageData]);
         setMessage('');
         setUserTyping('');
+        await socket.emit('join',{data: 'test'});
+        console.log('message sent');
     }
 
     const handleTyping = (e) => {
@@ -87,6 +90,7 @@ export default function Chat ({socket, username}) {
 
     return ( 
         <>
+            <ChatRooms socket={socket}/>
             <div className="chat">
                 <ChatHeader 
                     room={room} 

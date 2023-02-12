@@ -13,18 +13,25 @@ const socketIO = require('socket.io')(server, {
 });
 
 const roomClients = {};
-// const clients = {};
 
-// const userExists = (roomName, username) => {
-//   return roomClients.some((room) => room.room === roomName && room.users.includes(username));
-// }
+const rooms = ()  =>{
+  let rooms = [];
+  for (const room in roomClients) {
+    if(room){
+      rooms.push({
+        name: room,
+        users: roomClients[room]
+      });
+    }
+  }
+  return rooms;
+}
 
 
 socketIO.on('connection', (socket) => {
     console.log(`✅: ${socket.id} user just connected!`);
-
-    socketIO.emit('room_list', {rooms: Object.keys(roomClients)});
-    console.log(roomClients);
+    socketIO.emit('room_list', {rooms: rooms()});
+    
     
     socket.on('join_room', (data) => {
       const {room} = data;
@@ -45,7 +52,11 @@ socketIO.on('connection', (socket) => {
         room: room,
         notification: true
       };
+
+
       socket.to(room).emit('user_join', dataJoin);
+      socketIO.emit('room_list', {rooms: rooms()});
+
     });
 
     socket.on('leave_room', (data) => {
@@ -66,7 +77,8 @@ socketIO.on('connection', (socket) => {
         notification: true
       };
       socket.to(room).emit('user_leave', dataLeave);
-    })
+      socketIO.emit('room_list', {rooms: rooms()});
+    });
 
     socket.on('send_message', (data) => {
       socket.to(data.room).emit('recieve_message', data);

@@ -1,6 +1,6 @@
 import Util from './Util';
 import { useState, useEffect } from 'react';
-import { FiMessageCircle, FiLogIn, FiLogOut, FiUsers } from "react-icons/fi";
+import { FiMessageCircle, FiLogIn, FiLogOut, FiUsers, FiMaximize2, FiMinimize2 } from "react-icons/fi";
 
 function ChatHeader(props) {
   const [users, setUsers] = useState(0);
@@ -9,6 +9,9 @@ function ChatHeader(props) {
     props.socket.on('users_in_room', (data) => {
       setUsers(data.users);
     });
+    props.socket.on('disconnect', () => {
+      leaveRoom();
+    })
   }, [props.socket, props.setJoinedRoom, props.setRoom]);
 
   const joinRoom = async () => {
@@ -21,6 +24,7 @@ function ChatHeader(props) {
   const leaveRoom = async () => {
     await props.socket.emit('leave_room', { username: props.username, room: props.room, time: Util.dateNow() });
     props.setJoinedRoom(false);
+    props.setRoom('');
     props.setMessageList([]);
   }
 
@@ -47,19 +51,28 @@ function ChatHeader(props) {
                 <FiMessageCircle/>
               </div>
               
-              <input 
-                type="text" 
-                value={props.room} 
-                onChange={(e) => props.setRoom(e.target.value)} 
-                placeholder="Room name"
-                id="room"/> 
-              <button className="button button-dark" 
-              onClick={() => joinRoom()} 
-              title="Join a room">
-                <span className="button-text">Join</span> <FiLogIn/> 
-              </button>
+              <div className="flex">
+                <input 
+                  type="text" 
+                  value={props.room} 
+                  onChange={(e) => props.setRoom(e.target.value)} 
+                  placeholder="Room name"
+                  id="room"/> 
+                <button 
+                  className="button button-dark" 
+                  onClick={() => joinRoom()} 
+                  title="Join a room">
+                  <span className="button-text">Join</span> <FiLogIn/> 
+                </button>
+              </div>
             </>
             }
+            <div className="chat-maximize">
+              {props.fullscreen ?
+              <FiMinimize2 onClick={() => props.setFullscreen(false)}/> :
+              <FiMaximize2 onClick={() => props.setFullscreen(true)}/>}
+            </div>
+
         </div>
 
         <div className="user-typing">

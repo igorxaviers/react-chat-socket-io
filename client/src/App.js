@@ -43,7 +43,7 @@ function App() {
     localStorage.setItem('username', username);
   }
 
-  const logout = () => {
+  const logout = async () => {
     setUsername('');
     setJoinedChat(false);
     localStorage.removeItem('username');
@@ -54,7 +54,7 @@ function App() {
     <div className="App">
       <nav className="navbar">
         <div className="nav-logo">
-          <h1><span className="logo-style">Just</span> Chat</h1>
+          <h1><span className="logo-style">Just</span>Chat</h1>
         </div>
         {joinedChat ?
           <div className="user-info">

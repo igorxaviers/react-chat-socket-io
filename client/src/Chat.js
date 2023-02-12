@@ -13,6 +13,7 @@ export default function Chat ({socket, username}) {
     const [room, setRoom] = useState(''); 
     const [joinedRoom, setJoinedRoom] = useState(false);
     const [userTyping, setUserTyping] = useState('');
+    const [fullscreen, setFullscreen] = useState(false);
     const TYPING_DELAY = 2000;
 
     const sendMessage = async () => {
@@ -90,8 +91,15 @@ export default function Chat ({socket, username}) {
 
     return ( 
         <>
-            <ChatRooms socket={socket}/>
-            <div className="chat">
+            <ChatRooms 
+                socket={socket} 
+                setRoom={setRoom} 
+                room={room}
+                joinedRoom={joinedRoom} 
+                setJoinedRoom={setJoinedRoom} 
+                username={username}/>
+
+            <div className={`chat ${fullscreen ? 'chat-fullscreen' : ''}`}>
                 <ChatHeader 
                     room={room} 
                     username={username}
@@ -100,7 +108,9 @@ export default function Chat ({socket, username}) {
                     joinedRoom={joinedRoom} 
                     setJoinedRoom={setJoinedRoom} 
                     setMessageList={setMessageList}
-                    userTyping={userTyping}/>
+                    userTyping={userTyping}
+                    fullscreen={fullscreen}
+                    setFullscreen={setFullscreen}/>
 
                 <ChatBody 
                     messageList={messageList} 

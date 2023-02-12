@@ -8,7 +8,7 @@
   --color-secondary-darker: #bb4724;
   --color-tertiary: #e5552a;
   --color-quaternary: #181818;
-  --button: #ffffff1c;
+  --button: #ffffff13;
 } 
 html[data-theme='light'] {
   --background: #dddddd;
@@ -25,6 +25,7 @@ html[data-theme='light'] {
 
 body {
   margin: 0;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--background);
@@ -44,7 +45,7 @@ body {
 .navbar{
   position: relative;
   z-index: 10;
-  padding: 2em 0;
+  padding: 1.2em 0;
   color: var(--text);
   display: flex;
   justify-content: center;
@@ -91,33 +92,29 @@ body {
     display: flex;
     align-items: center;
     h1{
+      font-size: 1.5em;
       position: relative;
+      font-weight: 900;
+      text-align: center;
       .logo-style{
-        &::after{
-          content: '';
-          position: absolute;
-          left: -0.1em;
-          top: 0em;
-          width: 52%;
-          height: 100%;
-          border-radius: 6px;
-          z-index: -1;
-          background-color: var(--color-secondary);
-        }
-      }
-      &+svg{
-        margin-left: 0.5em;
-        width: 2em;
-        height: 2em;
+        // &::after{
+        //   content: '';
+        //   position: absolute;
+        //   left: -0.1em;
+        //   top: 0em;
+        //   width: 52%;
+        //   height: 100%;
+        //   border-radius: 6px;
+        //   z-index: -1;
+        //   background-color: var(--color-secondary);
+        // }
       }
     }
   }
 }
 
-h1{
-  font-size: 2em;
-  font-weight: 900;
-  text-align: center;
+.flex{
+  display: flex;
 }
 
 input, textarea {
@@ -170,7 +167,7 @@ label{
 }
 
 .modal-container{
-  z-index: 20;
+  z-index: 50;
   position: absolute;
   top: 0;
   left: 0;
@@ -205,14 +202,79 @@ label{
   }
 }
 
+.chat-rooms-container{
+  margin: 0 auto;
+  overflow: hidden;
+
+  h3{
+    font-size: 0.9em;
+    font-weight: 400;
+    margin-bottom: 0.8em;
+  }
+  .chat-rooms{
+    min-height: 40px;
+    display: flex;
+    justify-content: start;
+
+    p.info{
+      text-align: center;
+      width: 100%;
+      margin-top: 0.5em;
+      color: var(--button);
+    }
+
+    .chat-room{
+      user-select: none;
+      -webkit-user-drag: none;
+      padding: 0.6em 1em;
+      display: flex;
+      align-items: center;
+      margin-right: 1em;
+      border-radius: 0.5em;
+      background-color: var(--button);
+      border: 1px solid var(--button);
+      cursor: pointer;
+
+      &:hover{
+        color: var(--text);
+        background-color: var(--color-primary);
+      }
+      &.active{
+        border: 1px solid var(--color-secondary);
+        background-color: var(--color-primary);
+      }
+
+      h4{
+        font-size: 0.9em;
+        font-weight: 600;
+        margin: 0 0.5em;
+      }
+    }
+  }
+}
+
+
 
 .chat{
   overflow: hidden;
   position: relative;
-  z-index: 10;
+  z-index: 30;
   margin: 2em auto 0 auto;
   background-color: var(--color-primary);
   border-radius: 1em;
+  &.chat-fullscreen{
+    // transform: scale(1.2);
+    width: 80%;
+    margin: 1.2em auto;
+    top: -4.2em;
+    .chat-header{
+    }
+    .chat-messages{
+      min-height: 70vh;
+      max-height: 70vh;
+    }
+  }
+
 
   .chat-messages{
     overflow-y: scroll;
@@ -323,6 +385,29 @@ label{
     .button {
       margin-left: 1em;
     }
+
+    .chat-maximize{
+      width: 2.5em;
+      height: 2.5em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background-color: var(--background-light);
+      cursor: pointer;
+      right: 2em;
+      position: absolute;
+
+      &:hover{
+        background-color: var(--button);
+      }
+
+      svg{
+        width: 2.5em;
+        height: 2.5em;
+        padding: 0.6em;
+      }
+    }
   }
 
   .user-typing{
@@ -414,7 +499,7 @@ label{
 
 @media screen and (max-width: 768px) {
 
-  .chat{
+  .chat, .chat-rooms-container{
     width: 95%;
     margin: 0.6em auto 0 auto;
     .chat-messages{
@@ -433,6 +518,10 @@ label{
     }
     .chat-header{
       padding: 0.3em;
+      justify-content: space-between;
+      .chat-header-title{
+        display: none;
+      }
 
       label{
         font-size: 0.8em;
@@ -509,13 +598,13 @@ label{
 }
 
 @media screen and (min-width: 768px) {
-  .chat{
+  .chat, .chat-rooms-container{
     width: 70%;
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .chat{
+  .chat, .chat-rooms-container{
     width: 55%;
   }
 }
